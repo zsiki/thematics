@@ -260,14 +260,19 @@ class Thematics:
             self.dockwidget.show()
 
     def open_project(self, name, newwin=False):
-        # TODO get canvas extent
+        # get canvas extent
         project = QgsProject.instance()
+        pname = project.fileName()
+        if len(pname):
+            cext = self.iface.mapCanvas().extent()
         if not project.read(self.projects[name]):
             QMessageBox.warning(None, self.tr("Project"),
                 self.tr("Cannot open project: {}").format(self.projects[name]))
         else:
-            pass
-            # TODO set canvas extent
+            # set canvas extent
+            if len(pname):
+                self.iface.mapCanvas().setExtent(cext, True)
+                self.iface.mapCanvas().refresh()
 
     def open_layer_group(self, name):
         project = QgsProject.instance()
