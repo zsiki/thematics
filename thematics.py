@@ -56,7 +56,8 @@ class Thematics:
         locale_path = os.path.join(
             self.plugin_dir,
             'i18n',
-            'Thematics_{}.qm'.format(locale))
+            '{}.qm'.format(locale))
+        print(locale_path)
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()
@@ -82,14 +83,14 @@ class Thematics:
         parser = configparser.ConfigParser()
         path = os.path.join(self.plugin_dir, name)
         if not os.path.exists(path):
-            QMessageBox.warning(None, "Missing file",
-                "Config file not found: {}".format(path))
+            QMessageBox.warning(None, self.tr("Missing file"),
+                self.tr("Config file not found: {}").format(path))
             return ({}, {})
         try:
             parser.read(os.path.join(self.plugin_dir, name))
         except:
-            QMessageBox.warning(None, "Error in file",
-                "Config file is not valid: {}".format(path))
+            QMessageBox.warning(None, self.tr("Error in file"),
+                self.tr("Config file is not valid: {}").format(path))
             return ({}, {})
         projects = {}
         layers = {}
@@ -262,8 +263,8 @@ class Thematics:
         # TODO get canvas extent
         project = QgsProject.instance()
         if not project.read(self.projects[name]):
-            QMessageBox.warning(None, "Project",
-                "Cannot open project: {}".format(self.projects[name]))
+            QMessageBox.warning(None, self.tr("Project"),
+                self.tr("Cannot open project: {}").format(self.projects[name]))
         else:
             pass
             # TODO set canvas extent
@@ -280,13 +281,13 @@ class Thematics:
                     if v.isValid():
                         project.addMapLayer(r)
                     else:
-                        QMessageBox.warning(None, "Layer",
-                            "Cannot open layer: {}".format(l))
+                        QMessageBox.warning(None, self.tr("Layer"),
+                            self.tr("Cannot open layer: {}").format(l))
                 else:
                     # open vector
                     v = QgsVectorLayer(l, nam, 'ogr')
                     if v.isValid():
                         project.addMapLayer(v)
                     else:
-                        QMessageBox.warning(None, "Layer",
-                            "Cannot open layer: {}".format(l))
+                        QMessageBox.warning(None, self.tr("Layer"),
+                            self.tr("Cannot open layer: {}").format(l))
