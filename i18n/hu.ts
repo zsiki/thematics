@@ -37,24 +37,29 @@
         <translation>Hibás konfiguráció fájl: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="266"/>
+        <location filename="../thematics.py" line="282"/>
         <source>Project</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="266"/>
+        <location filename="../thematics.py" line="282"/>
         <source>Cannot open project: {}</source>
         <translation>Nem tudom a projetet megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="292"/>
+        <location filename="../thematics.py" line="314"/>
         <source>Layer</source>
         <translation>Réteg</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="292"/>
+        <location filename="../thematics.py" line="314"/>
         <source>Cannot open layer: {}</source>
         <translation>Nem tudom a réteget megnyitni: {}</translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="278"/>
+        <source>Cannot start qgis: {}</source>
+        <translation>Nem tudom a QGIS elindítani</translation>
     </message>
 </context>
 <context>
@@ -70,19 +75,24 @@
         <translation>Projektek:</translation>
     </message>
     <message>
-        <location filename="../thematics_dockwidget_base.ui" line="43"/>
+        <location filename="../thematics_dockwidget_base.ui" line="70"/>
         <source>Layers:</source>
         <translation>Rétegek:</translation>
     </message>
     <message>
-        <location filename="../thematics_dockwidget_base.ui" line="74"/>
+        <location filename="../thematics_dockwidget_base.ui" line="84"/>
         <source>Open</source>
         <translation>Megnyit</translation>
     </message>
     <message>
-        <location filename="../thematics_dockwidget_base.ui" line="84"/>
+        <location filename="../thematics_dockwidget_base.ui" line="63"/>
         <source>New window</source>
         <translation>Új ablak</translation>
+    </message>
+    <message>
+        <location filename="../thematics_dockwidget_base.ui" line="91"/>
+        <source>Remove</source>
+        <translation>Eltávolít</translation>
     </message>
 </context>
 </TS>

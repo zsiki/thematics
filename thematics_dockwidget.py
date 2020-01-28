@@ -48,6 +48,7 @@ class ThematicsDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.list_projects.itemDoubleClicked.connect(self.project)
         self.layer_button.clicked.connect(self.layer)
         self.list_layers.itemDoubleClicked.connect(self.layer)
+        self.remove_layer_button.clicked.connect(self.remove_layer)
 
     def project(self):
         i = self.list_projects.currentItem()
@@ -57,8 +58,12 @@ class ThematicsDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def layer(self):
         i = self.list_layers.currentItem()
         if i:
-            print("layer button pressed {}".format(i.text()))
             self.plugin.open_layer_group(i.text())
+
+    def remove_layer(self):
+        i = self.list_layers.currentItem()
+        if i:
+            self.plugin.remove_layer_group(i.text())
 
     def closeEvent(self, event):
         self.closingPlugin.emit()

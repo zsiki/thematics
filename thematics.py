@@ -31,7 +31,7 @@ from qgis.core import QgsProject, QgsVectorLayer, QgsRasterLayer
 
 # Import the code for the DockWidget
 from .thematics_dockwidget import ThematicsDockWidget
-import os.path
+import os
 import configparser
 
 class Thematics:
@@ -57,7 +57,6 @@ class Thematics:
             self.plugin_dir,
             'i18n',
             '{}.qm'.format(locale))
-        print(locale_path)
 
         if os.path.exists(locale_path):
             self.translator = QTranslator()
@@ -79,7 +78,7 @@ class Thematics:
         #self.run()
 
     def config(self, name='default.cfg'):
-
+        """ load and parse config file """
         parser = configparser.ConfigParser()
         path = os.path.join(self.plugin_dir, name)
         if not os.path.exists(path):
@@ -232,11 +231,8 @@ class Thematics:
 
     def run(self):
         """Run method that loads and starts the plugin"""
-
         if not self.pluginIsActive:
             self.pluginIsActive = True
-
-            #print "** STARTING Thematics"
 
             # dockwidget may not exist if:
             #    first run of plugin
@@ -260,39 +256,67 @@ class Thematics:
             self.dockwidget.show()
 
     def open_project(self, name, newwin=False):
+        """ open the selected project """
         # get canvas extent
         project = QgsProject.instance()
         pname = project.fileName()
         if len(pname):
             cext = self.iface.mapCanvas().extent()
-        if not project.read(self.projects[name]):
-            QMessageBox.warning(None, self.tr("Project"),
-                self.tr("Cannot open project: {}").format(self.projects[name]))
+            sext = "--extent {},{},{},{}".format(cext.xMinimum(),
+                cext.yMinimum(), cext.xMaximum(), cext.yMaximum())
         else:
-            # set canvas extent
-            if len(pname):
-                self.iface.mapCanvas().setExtent(cext, True)
-                self.iface.mapCanvas().refresh()
+            sext = ""
+        if newwin:
+            print("qgis --project {} {} &".format(self.projects[name], sext))
+            code = os.system("qgis --project {} {} &".format(
+                self.projects[name], sext))
+            if code != 0:
+                QMessageBox.warning(None, self.tr("Project"),
+                    self.tr("Cannot start qgis: {}").format(code))
+        else: 
+            if not project.read(self.projects[name]):
+                QMessageBox.warning(None, self.tr("Project"),
+                    self.tr("Cannot open project: {}").format(
+                        self.projects[name]))
+            else:
+                # set canvas extent
+                if len(pname):
+                    self.iface.mapCanvas().setExtent(cext, True)
+                    self.iface.mapCanvas().refresh()
 
     def open_layer_group(self, name):
+        """ add layer group to canvas """
         project = QgsProject.instance()
         if name in self.layers:
             for l in self.layers[name]:
                 ext = os.path.splitext(os.path.split(l)[1])[1]
                 nam = os.path.splitext(os.path.split(l)[1])[0]
-                if ext in ('.tif', '.jpg', '.png', '.vrt'):
-                    # open raster
-                    r = QgsRasterLayer(l, nam)
-                    if v.isValid():
-                        project.addMapLayer(r)
+                lobjs = project.mapLayersByName(nam)
+                if not lobjs:   # not in project yet
+                    if ext in ('.tif', '.jpg', '.png', '.vrt'):
+                        # open raster
+                        r = QgsRasterLayer(l, nam)
+                        if r.isValid():
+                            project.addMapLayer(r)
+                        else:
+                            QMessageBox.warning(None, self.tr("Layer"),
+                                self.tr("Cannot open layer: {}").format(l))
                     else:
-                        QMessageBox.warning(None, self.tr("Layer"),
-                            self.tr("Cannot open layer: {}").format(l))
-                else:
-                    # open vector
-                    v = QgsVectorLayer(l, nam, 'ogr')
-                    if v.isValid():
-                        project.addMapLayer(v)
-                    else:
-                        QMessageBox.warning(None, self.tr("Layer"),
-                            self.tr("Cannot open layer: {}").format(l))
+                        # open vector
+                        v = QgsVectorLayer(l, nam, 'ogr')
+                        if v.isValid():
+                            project.addMapLayer(v)
+                        else:
+                            QMessageBox.warning(None, self.tr("Layer"),
+                                self.tr("Cannot open layer: {}").format(l))
+
+    def remove_layer_group(self, name):
+        """ remove layer group from canvas """
+        project = QgsProject.instance()
+        if name in self.layers:
+            for l in self.layers[name]:
+                nam = os.path.splitext(os.path.split(l)[1])[0]
+                lobjs = project.mapLayersByName(nam)
+                if lobjs:
+                    project.removeMapLayers([lobjs[0].id()])
+        self.iface.mapCanvas().refresh()
