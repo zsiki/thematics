@@ -11,7 +11,7 @@
 <context>
     <name>Thematics</name>
     <message>
-        <location filename="../thematics.py" line="224"/>
+        <location filename="../thematics.py" line="229"/>
         <source>&amp;thematics</source>
         <translation type="unfinished"></translation>
     </message>
@@ -36,28 +36,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="282"/>
+        <location filename="../thematics.py" line="285"/>
         <source>Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="282"/>
+        <location filename="../thematics.py" line="285"/>
         <source>Cannot open project: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="314"/>
+        <location filename="../thematics.py" line="336"/>
         <source>Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="314"/>
+        <location filename="../thematics.py" line="336"/>
         <source>Cannot open layer: {}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="278"/>
+        <location filename="../thematics.py" line="281"/>
         <source>Cannot start qgis: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="311"/>
+        <source>Cannot open wms layer: {}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="314"/>
+        <source>Name error for wms layer: {}</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

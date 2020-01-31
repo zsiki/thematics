@@ -12,7 +12,7 @@
 <context>
     <name>Thematics</name>
     <message>
-        <location filename="../thematics.py" line="224"/>
+        <location filename="../thematics.py" line="229"/>
         <source>&amp;thematics</source>
         <translation>&amp;tematikák</translation>
     </message>
@@ -37,29 +37,39 @@
         <translation>Hibás konfiguráció fájl: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="282"/>
+        <location filename="../thematics.py" line="285"/>
         <source>Project</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="282"/>
+        <location filename="../thematics.py" line="285"/>
         <source>Cannot open project: {}</source>
         <translation>Nem tudom a projetet megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="314"/>
+        <location filename="../thematics.py" line="336"/>
         <source>Layer</source>
         <translation>Réteg</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="314"/>
+        <location filename="../thematics.py" line="336"/>
         <source>Cannot open layer: {}</source>
         <translation>Nem tudom a réteget megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="278"/>
+        <location filename="../thematics.py" line="281"/>
         <source>Cannot start qgis: {}</source>
         <translation>Nem tudom a QGIS elindítani</translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="311"/>
+        <source>Cannot open wms layer: {}</source>
+        <translation>Nem tudom megnyitni a wms réteget: {}</translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="314"/>
+        <source>Name error for wms layer: {}</source>
+        <translation>wms réteg név hiba: {}</translation>
     </message>
 </context>
 <context>

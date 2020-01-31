@@ -104,7 +104,12 @@ class Thematics:
                 layers[parser[section]['name']] = []
                 for key in parser[section]:
                     if key.startswith('layer'):
-                        layers[parser[section]['name']].append(os.path.join(base_dir, parser[section][key]))
+                        if parser[section][key].startswith("url="):
+                            # wms layer
+                            layers[parser[section]['name']].append(parser[section][key])
+                        else:
+                            # local raster/vector layer
+                            layers[parser[section]['name']].append(os.path.join(base_dir, parser[section][key]))
         return projects, layers
 
     # noinspection PyMethodMayBeStatic
@@ -284,38 +289,65 @@ class Thematics:
                     self.iface.mapCanvas().setExtent(cext, True)
                     self.iface.mapCanvas().refresh()
 
+    def wms_name(self, l):
+        """ get wms layer name """
+        nam = None
+        for tag in l.split("&"):
+            if tag.startswith("layers="):
+                nam = tag.split("=")[1]
+        return nam
+
     def open_layer_group(self, name):
         """ add layer group to canvas """
         project = QgsProject.instance()
         if name in self.layers:
             for l in self.layers[name]:
-                ext = os.path.splitext(os.path.split(l)[1])[1]
-                nam = os.path.splitext(os.path.split(l)[1])[0]
-                lobjs = project.mapLayersByName(nam)
-                if not lobjs:   # not in project yet
-                    if ext in ('.tif', '.jpg', '.png', '.vrt'):
-                        # open raster
-                        r = QgsRasterLayer(l, nam)
+                if l.startswith("url="):
+                    # wms layer
+                    nam = self.wms_name(l)
+                    if nam:
+                        # open wms
+                        r = QgsRasterLayer(l, nam, "wms")
                         if r.isValid():
                             project.addMapLayer(r)
                         else:
                             QMessageBox.warning(None, self.tr("Layer"),
-                                self.tr("Cannot open layer: {}").format(l))
+                                self.tr("Cannot open wms layer: {}").format(nam))
                     else:
-                        # open vector
-                        v = QgsVectorLayer(l, nam, 'ogr')
-                        if v.isValid():
-                            project.addMapLayer(v)
+                        QMessageBox.warning(None, self.tr("Layer"),
+                            self.tr("Name error for wms layer: {}").format(l))
+                else:
+                    # local vector/raster layer
+                    ext = os.path.splitext(os.path.split(l)[1])[1]
+                    nam = os.path.splitext(os.path.split(l)[1])[0]
+                    lobjs = project.mapLayersByName(nam)
+                    if not lobjs:   # not in project yet
+                        if ext in ('.tif', '.jpg', '.png', '.vrt'):
+                            # open raster
+                            r = QgsRasterLayer(l, nam)
+                            if r.isValid():
+                                project.addMapLayer(r)
+                            else:
+                                QMessageBox.warning(None, self.tr("Layer"),
+                                    self.tr("Cannot open layer: {}").format(l))
                         else:
-                            QMessageBox.warning(None, self.tr("Layer"),
-                                self.tr("Cannot open layer: {}").format(l))
+                            # open vector
+                            v = QgsVectorLayer(l, nam, 'ogr')
+                            if v.isValid():
+                                project.addMapLayer(v)
+                            else:
+                                QMessageBox.warning(None, self.tr("Layer"),
+                                    self.tr("Cannot open layer: {}").format(l))
 
     def remove_layer_group(self, name):
         """ remove layer group from canvas """
         project = QgsProject.instance()
         if name in self.layers:
             for l in self.layers[name]:
-                nam = os.path.splitext(os.path.split(l)[1])[0]
+                if l.startswith("url="):
+                    nam = self.wms_name(l)
+                else:
+                    nam = os.path.splitext(os.path.split(l)[1])[0]
                 lobjs = project.mapLayersByName(nam)
                 if lobjs:
                     project.removeMapLayers([lobjs[0].id()])
