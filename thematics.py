@@ -53,9 +53,7 @@ class Thematics:
 
         # initialize locale
         locale = QSettings().value('locale/userLocale')[0:2]
-        locale_path = os.path.join(
-            self.plugin_dir,
-            'i18n',
+        locale_path = os.path.join(self.plugin_dir, 'i18n',
             '{}.qm'.format(locale))
 
         if os.path.exists(locale_path):
@@ -66,9 +64,6 @@ class Thematics:
         # Declare instance attributes
         self.actions = []
         self.menu = self.tr(u'&thematics')
-        # TODO: We are going to let the user set this up in a future iteration
-        self.toolbar = self.iface.addToolBar(u'Thematics')
-        self.toolbar.setObjectName(u'Thematics')
 
         self.pluginIsActive = False
         self.dockwidget = None
@@ -182,12 +177,11 @@ class Thematics:
             action.setWhatsThis(whats_this)
 
         if add_to_toolbar:
-            self.toolbar.addAction(action)
+            # Adds plugin icon to Plugins toolbar
+            self.iface.addToolBarIcon(action)
 
         if add_to_menu:
-            self.iface.addPluginToMenu(
-                self.menu,
-                action)
+            self.iface.addPluginToMenu(self.menu, action)
 
         self.actions.append(action)
 
@@ -198,11 +192,8 @@ class Thematics:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon_path = ':/plugins/thematics/icon.png'
-        self.add_action(
-            icon_path,
-            text=self.tr(u''),
-            callback=self.run,
-            parent=self.iface.mainWindow())
+        self.add_action(icon_path, text=self.tr(u'Thematics'),
+            callback=self.run, parent=self.iface.mainWindow())
 
     #--------------------------------------------------------------------------
 
@@ -229,8 +220,6 @@ class Thematics:
                 self.tr(u'&thematics'),
                 action)
             self.iface.removeToolBarIcon(action)
-        # remove the toolbar
-        del self.toolbar
 
     #--------------------------------------------------------------------------
 
