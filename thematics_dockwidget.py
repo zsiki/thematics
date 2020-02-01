@@ -37,11 +37,6 @@ class ThematicsDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
     def __init__(self, plugin, parent=None):
         """Constructor."""
         super(ThematicsDockWidget, self).__init__(parent)
-        # Set up the user interface from Designer.
-        # After setupUI you can access any designer object by doing
-        # self.<objectname>, and you can use autoconnect slots - see
-        # http://doc.qt.io/qt-5/designer-using-a-ui-file.html
-        # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
         self.plugin = plugin    # for call backs if button pressed
         self.project_button.clicked.connect(self.project)

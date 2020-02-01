@@ -12,37 +12,37 @@
 <context>
     <name>Thematics</name>
     <message>
-        <location filename="../thematics.py" line="229"/>
+        <location filename="../thematics.py" line="224"/>
         <source>&amp;thematics</source>
         <translation>&amp;tematikák</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="85"/>
+        <location filename="../thematics.py" line="83"/>
         <source>Missing file</source>
         <translation>Hiányzó fájl</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="85"/>
+        <location filename="../thematics.py" line="83"/>
         <source>Config file not found: {}</source>
         <translation>Konfiguráció fájlt nem találom: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="91"/>
+        <location filename="../thematics.py" line="89"/>
         <source>Error in file</source>
         <translation>Hiba a fájlban</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="91"/>
+        <location filename="../thematics.py" line="89"/>
         <source>Config file is not valid: {}</source>
         <translation>Hibás konfiguráció fájl: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="285"/>
+        <location filename="../thematics.py" line="280"/>
         <source>Project</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="285"/>
+        <location filename="../thematics.py" line="280"/>
         <source>Cannot open project: {}</source>
         <translation>Nem tudom a projetet megnyitni: {}</translation>
     </message>
@@ -57,7 +57,7 @@
         <translation>Nem tudom a réteget megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="281"/>
+        <location filename="../thematics.py" line="276"/>
         <source>Cannot start qgis: {}</source>
         <translation>Nem tudom a QGIS elindítani</translation>
     </message>
@@ -70,6 +70,11 @@
         <location filename="../thematics.py" line="314"/>
         <source>Name error for wms layer: {}</source>
         <translation>wms réteg név hiba: {}</translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="200"/>
+        <source>Thematics</source>
+        <translation>Tematikák</translation>
     </message>
 </context>
 <context>
