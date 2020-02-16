@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="hu_HU" sourcelanguage="en">
+<!DOCTYPE TS><TS version="2.0" language="hu_HU" sourcelanguage="en">
 <context>
     <name>@default</name>
     <message>
@@ -12,7 +11,7 @@
 <context>
     <name>Thematics</name>
     <message>
-        <location filename="../thematics.py" line="224"/>
+        <location filename="../thematics.py" line="223"/>
         <source>&amp;thematics</source>
         <translation>&amp;tematikák</translation>
     </message>
@@ -37,42 +36,42 @@
         <translation>Hibás konfiguráció fájl: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="280"/>
+        <location filename="../thematics.py" line="277"/>
         <source>Project</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="280"/>
+        <location filename="../thematics.py" line="277"/>
         <source>Cannot open project: {}</source>
         <translation>Nem tudom a projetet megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="336"/>
+        <location filename="../thematics.py" line="341"/>
         <source>Layer</source>
         <translation>Réteg</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="336"/>
+        <location filename="../thematics.py" line="341"/>
         <source>Cannot open layer: {}</source>
         <translation>Nem tudom a réteget megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="276"/>
+        <location filename="../thematics.py" line="273"/>
         <source>Cannot start qgis: {}</source>
         <translation>Nem tudom a QGIS elindítani</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="311"/>
+        <location filename="../thematics.py" line="314"/>
         <source>Cannot open wms layer: {}</source>
         <translation>Nem tudom megnyitni a wms réteget: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="314"/>
+        <location filename="../thematics.py" line="317"/>
         <source>Name error for wms layer: {}</source>
         <translation>wms réteg név hiba: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="200"/>
+        <location filename="../thematics.py" line="301"/>
         <source>Thematics</source>
         <translation>Tematikák</translation>
     </message>

@@ -27,7 +27,7 @@ from qgis.PyQt.QtWidgets import QAction, QMessageBox
 # Initialize Qt resources from file resources.py
 from .resources import *
 
-from qgis.core import QgsProject, QgsVectorLayer, QgsRasterLayer
+from qgis.core import QgsProject, QgsVectorLayer, QgsRasterLayer, QgsLayerTreeLayer
 
 # Import the code for the DockWidget
 from .thematics_dockwidget import ThematicsDockWidget
@@ -264,7 +264,6 @@ class Thematics:
         else:
             sext = ""
         if newwin:
-            print("qgis --project {} {} &".format(self.projects[name], sext))
             code = os.system("qgis --project {} {} &".format(
                 self.projects[name], sext))
             if code != 0:
@@ -289,25 +288,45 @@ class Thematics:
                 nam = tag.split("=")[1]
         return nam
 
+    def reorder(self, r):
+        """ move vector layer to resonable position in layer order """
+        gtyp = r.geometryType() # point/line/polygon
+        rg = self.iface.layerTreeCanvasBridge().rootGroup()
+        order = rg.customLayerOrder()
+        for i in range(len(order)):
+            if order[i].geometryType() > gtyp:
+                order.insert(i, order.pop())    # move from end
+                rg.setCustomLayerOrder(order)
+                return
+                
+
     def open_layer_group(self, name):
         """ add layer group to canvas """
-        project = QgsProject.instance()
+        project = QgsProject.instance() # get project instance
+        # enable custom layer order 
+        rg = self.iface.layerTreeCanvasBridge().rootGroup()
+        if not rg.hasCustomLayerOrder():
+            rg.setHasCustomLayerOrder(True)
+        # check if thematics group in tree
+        root = project.layerTreeRoot()
+        themGroup = root.findGroup(self.tr("Thematics"))
+        if themGroup is None:
+            # create the group at the end of tree
+            themGroup = root.insertGroup(-1, self.tr("Thematics"))
         if name in self.layers:
             for l in self.layers[name]:
+                valid = False
+                typ = ""
                 if l.startswith("url="):
                     # wms layer
                     nam = self.wms_name(l)
                     if nam:
-                        # open wms
-                        r = QgsRasterLayer(l, nam, "wms")
-                        if r.isValid():
-                            project.addMapLayer(r)
-                        else:
-                            QMessageBox.warning(None, self.tr("Layer"),
-                                self.tr("Cannot open wms layer: {}").format(nam))
-                    else:
-                        QMessageBox.warning(None, self.tr("Layer"),
-                            self.tr("Name error for wms layer: {}").format(l))
+                        lobjs = project.mapLayersByName(nam)
+                        if not lobjs:   # not in project yet
+                            # open wms
+                            r = QgsRasterLayer(l, nam, "wms")
+                            valid = r.isValid()
+                            typ = "wms"
                 else:
                     # local vector/raster layer
                     ext = os.path.splitext(os.path.split(l)[1])[1]
@@ -317,19 +336,21 @@ class Thematics:
                         if ext in ('.tif', '.jpg', '.png', '.vrt'):
                             # open raster
                             r = QgsRasterLayer(l, nam)
-                            if r.isValid():
-                                project.addMapLayer(r)
-                            else:
-                                QMessageBox.warning(None, self.tr("Layer"),
-                                    self.tr("Cannot open layer: {}").format(l))
+                            valid = r.isValid()
+                            typ = "raster"
                         else:
                             # open vector
-                            v = QgsVectorLayer(l, nam, 'ogr')
-                            if v.isValid():
-                                project.addMapLayer(v)
-                            else:
-                                QMessageBox.warning(None, self.tr("Layer"),
-                                    self.tr("Cannot open layer: {}").format(l))
+                            r = QgsVectorLayer(l, nam, 'ogr')
+                            valid = r.isValid()
+                            typ = "vector"
+                if valid:
+                    project.addMapLayer(r, False)
+                    themGroup.insertChildNode(-1, QgsLayerTreeLayer(r))
+                    if typ == "vector":
+                        self.reorder(r)   # change layer position in layer order
+                else:
+                    QMessageBox.warning(None, self.tr("Layer"),
+                        self.tr("Cannot open layer: {}").format(nam))
 
     def remove_layer_group(self, name):
         """ remove layer group from canvas """
