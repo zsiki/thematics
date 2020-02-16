@@ -71,20 +71,19 @@ class Thematics:
         self.pluginIsActive = False
         self.dockwidget = None
         # load and process configuration
-        self.projects, self.layers = self.config()
+        self.projects, self.layers = self.config(os.path.join(self.plugin_dir, "default.cfg"))
         # open the panel
         #self.run()
 
-    def config(self, name='default.cfg'):
+    def config(self, path):
         """ load and parse config file """
         parser = configparser.ConfigParser()
-        path = os.path.join(self.plugin_dir, name)
         if not os.path.exists(path):
             QMessageBox.warning(None, self.tr("Missing file"),
                 self.tr("Config file not found: {}").format(path))
             return ({}, {})
         try:
-            parser.read(os.path.join(self.plugin_dir, name))
+            parser.read(path)
         except:
             QMessageBox.warning(None, self.tr("Error in file"),
                 self.tr("Config file is not valid: {}").format(path))
@@ -93,6 +92,8 @@ class Thematics:
         layers = {}
         base_dir = ""
         for section in parser.sections():
+            if section == "include":
+                return self.config(parser[section]['path'])
             if section == "base":
                 base_dir = parser[section].get('dir', self.plugin_dir)
             elif section == "projects":
