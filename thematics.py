@@ -98,7 +98,8 @@ class Thematics:
                 base_dir = parser[section].get('dir', self.plugin_dir)
             elif section == "projects":
                 for key in parser[section]:
-                   projects[key] = os.path.join(base_dir, parser[section][key])
+                    # join is wrong on windows \\ inserted while provider returns path with /
+                   projects[key] = base_dir+'/'+parser[section][key]
             elif section.startswith('layer_group'):
                 layers[parser[section]['name']] = []
                 for key in parser[section]:
@@ -108,7 +109,8 @@ class Thematics:
                             layers[parser[section]['name']].append(parser[section][key])
                         else:
                             # local raster/vector layer
-                            layers[parser[section]['name']].append(os.path.join(base_dir, parser[section][key]))
+                            # join is wrong on windows \\ inserted while provider returns path with /
+                            layers[parser[section]['name']].append(base_dir+'/'+parser[section][key])
         return projects, layers
 
     # noinspection PyMethodMayBeStatic
@@ -333,17 +335,18 @@ class Thematics:
                     ext = os.path.splitext(os.path.split(l)[1])[1]
                     nam = os.path.splitext(os.path.split(l)[1])[0]
                     lobjs = project.mapLayersByName(nam)
-                    if not lobjs:   # not in project yet
-                        if ext in ('.tif', '.jpg', '.png', '.vrt'):
-                            # open raster
-                            r = QgsRasterLayer(l, nam)
-                            valid = r.isValid()
-                            typ = "raster"
-                        else:
-                            # open vector
-                            r = QgsVectorLayer(l, nam, 'ogr')
-                            valid = r.isValid()
-                            typ = "vector"
+                    if lobjs:   # layer in project yet
+                        continue
+                    if ext in ('.tif', '.jpg', '.png', '.vrt'):
+                        # open raster
+                        r = QgsRasterLayer(l, nam)
+                        valid = r.isValid()
+                        typ = "raster"
+                    else:
+                        # open vector
+                        r = QgsVectorLayer(l, nam, 'ogr')
+                        valid = r.isValid()
+                        typ = "vector"
                 if valid:
                     project.addMapLayer(r, False)
                     themGroup.insertChildNode(-1, QgsLayerTreeLayer(r))
