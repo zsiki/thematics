@@ -24,25 +24,6 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_projects">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="locale">
-       <locale language="English" country="UnitedStates"/>
-      </property>
-      <property name="text">
-       <string>Projects:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="0" colspan="2">
      <widget class="QListWidget" name="list_projects">
       <property name="sizePolicy">
@@ -55,6 +36,9 @@
     </item>
     <item row="3" column="0">
      <widget class="QPushButton" name="project_button">
+      <property name="toolTip">
+       <string>Open the selected project</string>
+      </property>
       <property name="text">
        <string>Open</string>
       </property>
@@ -64,6 +48,9 @@
      <widget class="QCheckBox" name="newwin_check">
       <property name="enabled">
        <bool>true</bool>
+      </property>
+      <property name="toolTip">
+       <string>Open project in a new QGIS window</string>
       </property>
       <property name="text">
        <string>New window</string>
@@ -92,8 +79,11 @@
     </item>
     <item row="6" column="0">
      <widget class="QPushButton" name="layer_button">
+      <property name="toolTip">
+       <string>Add the selected layer to map canvas</string>
+      </property>
       <property name="text">
-       <string>Open</string>
+       <string>Add</string>
       </property>
      </widget>
     </item>
@@ -101,6 +91,35 @@
      <widget class="QPushButton" name="remove_layer_button">
       <property name="text">
        <string>Remove</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_projects">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="text">
+       <string>Projects:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="config_button">
+      <property name="toolTip">
+       <string>Load another poject and layer set configuration</string>
+      </property>
+      <property name="text">
+       <string>Load Config ...</string>
       </property>
      </widget>
     </item>

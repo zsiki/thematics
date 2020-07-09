@@ -255,6 +255,21 @@ class Thematics:
             self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
 
+    def new_config(self, f):
+        """ load a new config file """
+        if len(f):
+            self.dockwidget.list_projects.clear()
+            self.dockwidget.list_layers.clear()
+            self.projects = {}
+            self.layers = {}
+            self.projects, self.layers = self.config(f)
+            # fill list with project names
+            for project in self.projects:
+                self.dockwidget.list_projects.addItem(project)
+            # fill list with layer_group names
+            for layer in self.layers:
+                self.dockwidget.list_layers.addItem(layer)
+
     def open_project(self, name, newwin=False):
         """ open the selected project """
         # get canvas extent

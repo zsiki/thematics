@@ -44,21 +44,33 @@ class ThematicsDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.layer_button.clicked.connect(self.layer)
         self.list_layers.itemDoubleClicked.connect(self.layer)
         self.remove_layer_button.clicked.connect(self.remove_layer)
+        self.config_button.clicked.connect(self.load_config)
 
     def project(self):
+        """ open the selected project prom the list """
         i = self.list_projects.currentItem()
         if i:
             self.plugin.open_project(i.text(), self.newwin_check.isChecked())
 
     def layer(self):
+        """ add the selected layer to the canvas """
         i = self.list_layers.currentItem()
         if i:
             self.plugin.open_layer_group(i.text())
 
     def remove_layer(self):
+        """ remove the selected layer from canvas """
         i = self.list_layers.currentItem()
         if i:
             self.plugin.remove_layer_group(i.text())
+
+    def load_config(self):
+        """ select and load new configuration """
+        qfd = QtWidgets.QFileDialog()
+        filt = self.plugin.tr("Config files(*.cfg)")
+        title = self.plugin.tr("Select config file to load")
+        f, _ = QtWidgets.QFileDialog.getOpenFileName(qfd, title, ".", filt)
+        self.plugin.new_config(f)
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
