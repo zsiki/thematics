@@ -73,7 +73,7 @@ class Thematics:
         # load and process configuration
         self.projects, self.layers = self.config(os.path.join(self.plugin_dir, "default.cfg"))
         # open the panel
-        #self.run()
+        self.run()
 
     def config(self, path):
         """ load and parse config file """
@@ -213,8 +213,7 @@ class Thematics:
         # for reuse if plugin is reopened
         # Commented next statement since it causes QGIS crashe
         # when closing the docked window:
-        # self.dockwidget = None
-
+        #self.dockwidget = None
         self.pluginIsActive = False
 
 
@@ -226,6 +225,11 @@ class Thematics:
                 self.tr(u'&thematics'),
                 action)
             self.iface.removeToolBarIcon(action)
+            try:
+                self.dockwidget.close()
+            except:
+                pass
+            self.dockwidget = None
 
     #--------------------------------------------------------------------------
 
