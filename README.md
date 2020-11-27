@@ -52,8 +52,7 @@ You can add comment to the config file starting a line with semicolon.
 
 Sample configuration file
 
-.. code:: 
-
+```
     ; sample config file for thematics plug-in
     [base]
     dir = /home/user/demo
@@ -68,6 +67,7 @@ Sample configuration file
     name = extra layers
     layer1 = project/layers/trees.shp
     layer2 = project/layers/bushes.tab
+```
 
 The development of this plug-in was supported by the local municipality of
 XXII disctrict of Budapest, Hungary.
