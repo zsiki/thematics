@@ -18,6 +18,7 @@ Select the name of the layer and push **Add** or **Remmove** button.
 
 The default configuration, which is loaded automatic when the plug-in loaded,
 is located in the folder of the plugin (called *default.cfg*).
+Before you start using this plug-in, you have to customize that.
 There are four type of available groups in configuration file:
 
 [base]
