@@ -73,7 +73,7 @@ class Thematics:
         # load and process configuration
         self.projects, self.layers = self.config(os.path.join(self.plugin_dir, "default.cfg"))
         # open the panel
-        self.run()
+        #self.run()
 
     def config(self, path):
         """ load and parse config file """
