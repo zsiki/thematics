@@ -21,6 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 """
+import os
+import configparser
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
@@ -31,8 +33,8 @@ from qgis.core import QgsProject, QgsVectorLayer, QgsRasterLayer, QgsLayerTreeLa
 
 # Import the code for the DockWidget
 from .thematics_dockwidget import ThematicsDockWidget
-import os
-import configparser
+
+DEFAULT_CONFIG = "L:/xxii/thematics.cfg"
 
 class Thematics:
     """QGIS Plugin Implementation."""
@@ -54,7 +56,7 @@ class Thematics:
         # initialize locale
         try:
             locale = QSettings().value('locale/userLocale')[0:2]
-        except:
+        except Exception:
             locale = "hu"
         locale_path = os.path.join(self.plugin_dir, 'i18n',
             '{}.qm'.format(locale))
@@ -71,7 +73,11 @@ class Thematics:
         self.pluginIsActive = False
         self.dockwidget = None
         # load and process configuration
-        self.projects, self.layers = self.config(os.path.join(self.plugin_dir, "default.cfg"))
+        self.side = "left"
+        if os.path.exists(DEFAULT_CONFIG):
+            self.projects, self.layers, self.side = self.config(DEFAULT_CONFIG)
+        else:
+            self.projects, self.layers, self.side = self.config(os.path.join(self.plugin_dir, "default.cfg"))
         # open the panel
         #self.run()
 
@@ -81,21 +87,23 @@ class Thematics:
         if not os.path.exists(path):
             QMessageBox.warning(None, self.tr("Missing file"),
                 self.tr("Config file not found: {}").format(path))
-            return ({}, {})
+            return ({}, {}, "left")
         try:
             parser.read(path)
-        except:
+        except Exception:
             QMessageBox.warning(None, self.tr("Error in file"),
                 self.tr("Config file is not valid: {}").format(path))
-            return ({}, {})
+            return ({}, {}, "left")
         projects = {}
         layers = {}
         base_dir = ""
+        side = ""
         for section in parser.sections():
             if section == "include":
                 return self.config(parser[section]['path'])
             if section == "base":
                 base_dir = parser[section].get('dir', self.plugin_dir)
+                side = parser[section].get('side', "left")
             elif section == "projects":
                 for key in parser[section]:
                     # join is wrong on windows \\ inserted while provider returns path with /
@@ -111,7 +119,7 @@ class Thematics:
                             # local raster/vector layer
                             # join is wrong on windows \\ inserted while provider returns path with /
                             layers[parser[section]['name']].append(base_dir+'/'+parser[section][key])
-        return projects, layers
+        return projects, layers, side
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -227,7 +235,7 @@ class Thematics:
             self.iface.removeToolBarIcon(action)
             try:
                 self.dockwidget.close()
-            except:
+            except Exception:
                 pass
             self.dockwidget = None
 
@@ -255,13 +263,15 @@ class Thematics:
             self.dockwidget.closingPlugin.connect(self.onClosePlugin)
 
             # show the dockwidget
-            # TODO: fix to allow choice of dock location
-            self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
+            if self.side == "right":
+                self.iface.addDockWidget(Qt.RightDockWidgetArea, self.dockwidget)
+            else:
+                self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.dockwidget)
             self.dockwidget.show()
 
     def new_config(self, f):
         """ load a new config file """
-        if len(f):
+        if len(f) > 0:
             self.dockwidget.list_projects.clear()
             self.dockwidget.list_layers.clear()
             self.projects = {}
@@ -279,7 +289,7 @@ class Thematics:
         # get canvas extent
         project = QgsProject.instance()
         pname = project.fileName()
-        if len(pname):
+        if len(pname) > 0:
             cext = self.iface.mapCanvas().extent()
             sext = "--extent {},{},{},{}".format(cext.xMinimum(),
                 cext.yMinimum(), cext.xMaximum(), cext.yMaximum())
@@ -291,14 +301,14 @@ class Thematics:
             if code != 0:
                 QMessageBox.warning(None, self.tr("Project"),
                     self.tr("Cannot start qgis: {}").format(code))
-        else: 
+        else:
             if not project.read(self.projects[name]):
                 QMessageBox.warning(None, self.tr("Project"),
                     self.tr("Cannot open project: {}").format(
                         self.projects[name]))
             else:
                 # set canvas extent
-                if len(pname):
+                if len(pname) > 0:
                     self.iface.mapCanvas().setExtent(cext, True)
                     self.iface.mapCanvas().refresh()
 
@@ -320,12 +330,11 @@ class Thematics:
                 order.insert(i, order.pop())    # move from end
                 rg.setCustomLayerOrder(order)
                 return
-                
 
     def open_layer_group(self, name):
         """ add layer group to canvas """
         project = QgsProject.instance() # get project instance
-        # enable custom layer order 
+        # enable custom layer order
         rg = self.iface.layerTreeCanvasBridge().rootGroup()
         if not rg.hasCustomLayerOrder():
             rg.setHasCustomLayerOrder(True)
