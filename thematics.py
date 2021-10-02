@@ -26,10 +26,10 @@ import configparser
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
-# Initialize Qt resources from file resources.py
-from .resources import *
 
 from qgis.core import QgsProject, QgsVectorLayer, QgsRasterLayer, QgsLayerTreeLayer
+# Initialize Qt resources from file resources.py
+from .resources import *
 
 # Import the code for the DockWidget
 from .thematics_dockwidget import ThematicsDockWidget
@@ -107,7 +107,7 @@ class Thematics:
             elif section == "projects":
                 for key in parser[section]:
                     # join is wrong on windows \\ inserted while provider returns path with /
-                   projects[key] = base_dir+'/'+parser[section][key]
+                    projects[key] = base_dir+'/'+parser[section][key]
             elif section.startswith('layer_group'):
                 layers[parser[section]['name']] = []
                 for key in parser[section]:
