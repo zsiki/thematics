@@ -276,7 +276,7 @@ class Thematics:
             self.dockwidget.list_layers.clear()
             self.projects = {}
             self.layers = {}
-            self.projects, self.layers = self.config(f)
+            self.projects, self.layers, self.side = self.config(f)
             # fill list with project names
             for project in self.projects:
                 self.dockwidget.list_projects.addItem(project)
