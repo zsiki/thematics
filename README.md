@@ -23,8 +23,10 @@ There are four type of available groups in configuration file:
 
 [base]
 
-There is only one  parameter for this group *dir* which is a base directory
-for all the following relative paths of data sets and project files.
+There are two  parameters for this groupi, *dir* is the base directory
+for all the following relative paths of data sets and project files and
+*side* defines the initial side of thematics panel the available values 
+are *left* and *right*.
 
 [projects]
 
@@ -57,6 +59,7 @@ Sample configuration file
     ; sample config file for thematics plug-in
     [base]
     dir = /home/user/demo
+    side = left
     [projects]
     base_map = projects/base.qgz
     other_map = projects/other.qgz
