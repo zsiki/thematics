@@ -375,6 +375,10 @@ class Thematics:
                         r = QgsVectorLayer(l, nam, 'ogr')
                         valid = r.isValid()
                         typ = "vector"
+                        # check qml & load
+                        qname = os.path.splitext(l)[0] + '.qml'
+                        if os.path.exists(qname):
+                            r.loadNamedStyle(qname)
                 if valid:
                     project.addMapLayer(r, False)
                     themGroup.insertChildNode(-1, QgsLayerTreeLayer(r))

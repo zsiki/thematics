@@ -41,7 +41,8 @@ name parameter can be given and more layer*n* parameters. For layers
 assign the path to the layer. In the layer list in panel of the plug-in, only
 the name will be visible and the layers in the group can be added/removed as 
 a unit. The path to the layer can be a valid url to point to a WMS/WFS 
-server.
+server. In case of a vector layer (not WFS) a .qml file is also loaded with the
+same path if exists.
 
 [include]
 
