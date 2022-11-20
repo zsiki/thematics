@@ -326,7 +326,7 @@ class Thematics:
         rg = self.iface.layerTreeCanvasBridge().rootGroup()
         order = rg.customLayerOrder()
         for i in range(len(order)):
-            if order[i].geometryType() > gtyp:
+            if isinstance(order[i], QgsRasterLayer) or order[i].geometryType() > gtyp:
                 order.insert(i, order.pop())    # move from end
                 rg.setCustomLayerOrder(order)
                 return
