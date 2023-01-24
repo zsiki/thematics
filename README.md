@@ -2,11 +2,12 @@
 QGIS plug-in to select projects and thematics from a given list
 
 This plug-in was created to help the use of several projects and layers with
-a click of the mouse. Stating the plug-in a new panel displayed.
+a click of the mouse. Starting the plug-in a new panel displayed.
 
 ![panel of the plugin](fig1.png "Panel")
 
-The panel contains pre-configured projects (upper part) and individual layers 
+The panel contains pre-configured projects (upper part) and individual
+layers/layer groups
 (lower part). Select a project from the list and push **Open** button or double 
 click on the project name. The previous project will be closed.
 If you check New window checkbox, a new QGIS windows will be opened.
