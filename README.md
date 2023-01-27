@@ -41,9 +41,26 @@ Where *n* is a number to make the group name unique. In the layer group one
 name parameter can be given and more layer*n* parameters. For layers
 assign the path to the layer. In the layer list in panel of the plug-in, only
 the name will be visible and the layers in the group can be added/removed as 
-a unit. The path to the layer can be a valid url to point to a WMS/WFS 
+a unit. The path to the layer can be a valid url to point to a WMS or XYZ tile
 server. In case of a vector layer (not WFS) a .qml file is also loaded with the
 same path if exists.
+
+Sample for WMS layer:
+
+.. code::
+
+    [layer_group9]
+    name = eudem_wms
+    layer1 = http://www.agt.bme.hu/cgi-bin/eu_dem.wms&format=image/png&layers=mo_eov&styles=&crs=EPSG:23700
+
+Sample for XYZ tile layer:
+
+.. code::
+
+    [layer_group10]
+    name = eudem_xyz
+    layer1 = type=xyz&url=http://www.agt.bme.hu/maps/eu_dem_tiles/{z}/{x}/{-y}.png
+
 
 [include]
 

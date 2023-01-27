@@ -6,7 +6,7 @@
 name=thematics
 qgisMinimumVersion=3.0
 description=open projects and layer group from list
-version=0.4
+version=0.5
 author=Zoltan Siki
 email=siki1958@gmail.com
 
@@ -20,7 +20,7 @@ repository=https://github.com/zsiki/thematics
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-changelog=fix error loading new config file
+changelog=load QGIS layer style file for vector layers if it exists;fix layer order in case of raster layer;load xyz tile layers from config
 
 # Tags are comma separated with spaces allowed
 tags=layers, project

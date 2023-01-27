@@ -68,7 +68,7 @@ class Thematics:
 
         # Declare instance attributes
         self.actions = []
-        self.menu = self.tr(u'&thematics')
+        self.menu = self.tr('&thematics')
 
         self.pluginIsActive = False
         self.dockwidget = None
@@ -112,7 +112,8 @@ class Thematics:
                 layers[parser[section]['name']] = []
                 for key in parser[section]:
                     if key.startswith('layer'):
-                        if parser[section][key].startswith("url="):
+                        if parser[section][key].startswith("url=") or \
+                           parser[section][key].startswith("type=xyz"):
                             # wms layer
                             layers[parser[section]['name']].append(parser[section][key])
                         else:
@@ -206,7 +207,7 @@ class Thematics:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon_path = ':/plugins/thematics/icon.png'
-        self.add_action(icon_path, text=self.tr(u'Thematics'),
+        self.add_action(icon_path, text=self.tr('Thematics'),
             callback=self.run, parent=self.iface.mainWindow())
 
     #--------------------------------------------------------------------------
@@ -230,7 +231,7 @@ class Thematics:
 
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&thematics'),
+                self.tr('&thematics'),
                 action)
             self.iface.removeToolBarIcon(action)
             try:
@@ -249,7 +250,7 @@ class Thematics:
             # dockwidget may not exist if:
             #    first run of plugin
             #    removed on close (see self.onClosePlugin method)
-            if self.dockwidget == None:
+            if self.dockwidget is None:
                 # Create the dockwidget (after translation) and keep reference
                 self.dockwidget = ThematicsDockWidget(self)
                 # fill list with project names
@@ -314,11 +315,15 @@ class Thematics:
 
     def wms_name(self, l):
         """ get wms layer name """
-        nam = None
-        for tag in l.split("&"):
-            if tag.startswith("layers="):
-                nam = tag.split("=")[1]
-        return nam
+        if l.startswith("url="):
+            for tag in l.split("&"):
+                if tag.startswith("layers="):
+                    return tag.split("=")[1]
+        else:
+            for tag in l.split("&"):
+                if tag.startswith("url="):
+                    return tag.split("=")[1]
+        return None
 
     def reorder(self, r):
         """ move vector layer to resonable position in layer order """
@@ -348,9 +353,11 @@ class Thematics:
             for l in self.layers[name]:
                 valid = False
                 typ = ""
-                if l.startswith("url="):
-                    # wms layer
+                if l.startswith("url=") or l.startswith("type=xyz"):
+                    # wms or XYZ tile layer
+                    print(l)
                     nam = self.wms_name(l)
+                    print(nam)
                     if nam:
                         lobjs = project.mapLayersByName(nam)
                         if not lobjs:   # not in project yet
