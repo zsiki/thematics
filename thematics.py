@@ -22,6 +22,7 @@
  ***************************************************************************/
 """
 import os
+import platform
 import configparser
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
@@ -297,7 +298,18 @@ class Thematics:
         else:
             sext = ""
         if newwin:
-            code = os.system("qgis --project {} {}".format(
+            if platform.system() == "Windows":
+                qgis_exe = os.path.join(os.environ["appdata"],
+                    "Microsoft", "Windows", "Start Menu",
+                    "Programs", "QGIS3.lnk")
+                if not os.path.isfile(qgis_exe):
+                    qgis_exe = os.path.join(os.environ["allusersprofile"],
+                        "Microsoft", "Windows", "Start Menu",
+                        "Programs", "QGIS3.lnk")
+                qgis_exe = '"' + qgis_exe + '"'
+            else:
+                qgis_exe = 'qgis'   # linux, osx
+            code = os.system('{} --project {} {}'.format(qgis_exe,
                 self.projects[name], sext))
             if code != 0:
                 QMessageBox.warning(None, self.tr("Project"),
