@@ -297,7 +297,7 @@ class Thematics:
         else:
             sext = ""
         if newwin:
-            code = os.system("qgis --project {} {} &".format(
+            code = os.system("qgis --project {} {}".format(
                 self.projects[name], sext))
             if code != 0:
                 QMessageBox.warning(None, self.tr("Project"),
