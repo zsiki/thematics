@@ -28,7 +28,7 @@ from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMessageBox
 
-from qgis.core import QgsProject, QgsVectorLayer, QgsRasterLayer, QgsLayerTreeLayer
+from qgis.core import QgsApplication, QgsProject, QgsVectorLayer, QgsRasterLayer, QgsLayerTreeLayer
 # Initialize Qt resources from file resources.py
 from .resources import *
 
@@ -296,21 +296,16 @@ class Thematics:
             sext = "--extent {},{},{},{}".format(cext.xMinimum(),
                 cext.yMinimum(), cext.xMaximum(), cext.yMaximum())
         else:
-            sext = ""
+            #sext = ""
+            sext = []
         if newwin:
+            qgis_exe = QgsApplication.instance().applicationFilePath()
             if platform.system() == "Windows":
-                qgis_exe = os.path.join(os.environ["appdata"],
-                    "Microsoft", "Windows", "Start Menu",
-                    "Programs", "QGIS3.lnk")
-                if not os.path.isfile(qgis_exe):
-                    qgis_exe = os.path.join(os.environ["allusersprofile"],
-                        "Microsoft", "Windows", "Start Menu",
-                        "Programs", "QGIS3.lnk")
-                qgis_exe = '"' + qgis_exe + '"'
-            else:
-                qgis_exe = 'qgis'   # linux, osx
-            code = os.system('{} --project {} {}'.format(qgis_exe,
-                self.projects[name], sext))
+                code = os.system('"{}" --project {} {}'.format(qgis_exe,
+                    self.projects[name], sext))
+            else: # add execute in background
+                code = os.system('{} --project {} {} &'.format(qgis_exe,
+                    self.projects[name], sext))
             if code != 0:
                 QMessageBox.warning(None, self.tr("Project"),
                     self.tr("Cannot start qgis: {}").format(code))
