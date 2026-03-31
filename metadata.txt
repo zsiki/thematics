@@ -6,11 +6,11 @@
 name=thematics
 qgisMinimumVersion=3.0
 description=open projects and layer group from list
-version=0.6
+version=0.8
 author=Zoltan Siki
 email=siki1958@gmail.com
 
-about=The user can open selected QGIS projects and thematics (group of layers) from a list. It makes easier the simple user to use limited number of data sets (without knowing the folders, network, etc.)
+about=The user can open selected QGIS projects and thematics (group of layers) from a list. It makes easier for the simple user to use limited number of data sets (without knowing the folders, network, etc.)
 
 tracker=https://github.com/zsiki/thematics/issues
 repository=https://github.com/zsiki/thematics
@@ -20,10 +20,10 @@ repository=https://github.com/zsiki/thematics
 
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
-changelog=fix load project in new window on Windows
+changelog=Warning if layer added twice, fix remove layer bug
 
 # Tags are comma separated with spaces allowed
-tags=layers, project
+tags=layers, projects
 
 homepage=https://github.com/zsiki/thematics
 category=Plugins

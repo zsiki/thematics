@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="2.0" language="hu_HU" sourcelanguage="en">
+<!DOCTYPE TS>
+<TS version="2.1" language="hu_HU" sourcelanguage="en">
 <context>
     <name>@default</name>
     <message>
@@ -11,59 +12,64 @@
 <context>
     <name>Thematics</name>
     <message>
-        <location filename="../thematics.py" line="232"/>
+        <location filename="../thematics.py" line="236"/>
         <source>&amp;thematics</source>
         <translation>&amp;tematikák</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="88"/>
+        <location filename="../thematics.py" line="91"/>
         <source>Missing file</source>
         <translation>Hiányzó fájl</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="88"/>
+        <location filename="../thematics.py" line="91"/>
         <source>Config file not found: {}</source>
         <translation>Konfiguráció fájlt nem találom: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="94"/>
+        <location filename="../thematics.py" line="97"/>
         <source>Error in file</source>
         <translation>Hiba a fájlban</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="94"/>
+        <location filename="../thematics.py" line="97"/>
         <source>Config file is not valid: {}</source>
         <translation>Hibás konfiguráció fájl: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="306"/>
+        <location filename="../thematics.py" line="337"/>
         <source>Project</source>
         <translation>Projekt</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="306"/>
+        <location filename="../thematics.py" line="337"/>
         <source>Cannot open project: {}</source>
         <translation>Nem tudom a projetet megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="384"/>
+        <location filename="../thematics.py" line="428"/>
         <source>Layer</source>
         <translation>Réteg</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="384"/>
+        <location filename="../thematics.py" line="428"/>
         <source>Cannot open layer: {}</source>
         <translation>Nem tudom a réteget megnyitni: {}</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="302"/>
+        <location filename="../thematics.py" line="313"/>
         <source>Cannot start qgis: {}</source>
         <translation>Nem tudom a QGIS elindítani</translation>
     </message>
     <message>
-        <location filename="../thematics.py" line="346"/>
+        <location filename="../thematics.py" line="381"/>
         <source>Thematics</source>
         <translation>Tematikák</translation>
+    </message>
+    <message>
+        <location filename="../thematics.py" line="399"/>
+        <source>Layer already added to project: {}</source>
+        <translation>A réteget már hozzáadták a projekthez: {}</translation>
     </message>
 </context>
 <context>

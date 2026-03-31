@@ -26,7 +26,9 @@ import platform
 import configparser
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QMessageBox
+from qgis.PyQt.QtWidgets import QAction, QMessageBox, QDockWidget
+from qgis.gui import QgsMapCanvas
+#from qgis._3d import Qgs3DMapCanvas
 
 from qgis.core import QgsApplication, QgsProject, QgsVectorLayer, QgsRasterLayer, QgsLayerTreeLayer
 # Initialize Qt resources from file resources.py
@@ -292,6 +294,7 @@ class Thematics:
         project = QgsProject.instance()
         pname = project.fileName()
         if len(pname) > 0:
+            # get extent of actual view
             cext = self.iface.mapCanvas().extent()
             sext = "--extent {},{},{},{}".format(cext.xMinimum(),
                 cext.yMinimum(), cext.xMaximum(), cext.yMaximum())
@@ -310,6 +313,26 @@ class Thematics:
                 QMessageBox.warning(None, self.tr("Project"),
                     self.tr("Cannot start qgis: {}").format(code))
         else:
+            # close 2D map views
+            mw = self.iface.mainWindow()
+            for canvas in mw.findChildren(QgsMapCanvas):
+                if canvas is self.iface.mapCanvas():
+                    continue    # skip main canvas
+                dock = canvas.parent()
+                while dock and not isinstance(dock, QDockWidget):
+                    dock = dock.parent()
+                if dock:
+                    dock.close()
+            # close 3D map views
+            #for canvas in mw.findChildren(Qgs3DMapCanvas):
+            #    if canvas is self.iface.mapCanvas():
+            #        continue    # skip main canvas
+            #    dock = canvas.parent()
+            #    while dock and not isinstance(dock, QDockWidget):
+            #        dock = dock.parent()
+            #    if dock:
+            #        dock.close()
+            # open project and set extent
             if not project.read(self.projects[name]):
                 QMessageBox.warning(None, self.tr("Project"),
                     self.tr("Cannot open project: {}").format(
@@ -321,7 +344,7 @@ class Thematics:
                     self.iface.mapCanvas().refresh()
 
     def wms_name(self, l):
-        """ get wms layer name """
+        """ OBSOLATE get wms layer name """
         if l.startswith("url="):
             for tag in l.split("&"):
                 if tag.startswith("layers="):
@@ -362,22 +385,26 @@ class Thematics:
                 typ = ""
                 if l.startswith("url=") or l.startswith("type=xyz"):
                     # wms or XYZ tile layer
-                    print(l)
                     nam = self.wms_name(l)
-                    print(nam)
-                    if nam:
-                        lobjs = project.mapLayersByName(nam)
-                        if not lobjs:   # not in project yet
-                            # open wms
-                            r = QgsRasterLayer(l, nam, "wms")
-                            valid = r.isValid()
-                            typ = "wms"
+                    #if nam:
+                    lobjs = project.mapLayersByName(name)
+                    if not lobjs:   # not in project yet
+                        # open wms
+                        r = QgsRasterLayer(l, name, "wms")
+                        valid = r.isValid()
+                        typ = "wms"
+                    else:
+                        QMessageBox.warning(None, self.tr("Layer"),
+                            self.tr("Layer already added to project: {}").format(nam))
+                        continue
                 else:
                     # local vector/raster layer
                     ext = os.path.splitext(os.path.split(l)[1])[1]
-                    nam = os.path.splitext(os.path.split(l)[1])[0]
+                    nam = name + ":" + os.path.splitext(os.path.split(l)[1])[0]
                     lobjs = project.mapLayersByName(nam)
                     if lobjs:   # layer in project yet
+                        QMessageBox.warning(None, self.tr("Layer"),
+                            self.tr("Layer already added to project: {}").format(nam))
                         continue
                     if ext in ('.tif', '.jpg', '.png', '.vrt'):
                         # open raster
@@ -407,10 +434,10 @@ class Thematics:
         project = QgsProject.instance()
         if name in self.layers:
             for l in self.layers[name]:
-                if l.startswith("url="):
-                    nam = self.wms_name(l)
+                if l.startswith("url=") or l.startswith("type="):
+                    nam = name #self.wms_name(l)
                 else:
-                    nam = os.path.splitext(os.path.split(l)[1])[0]
+                    nam = name + ":" + os.path.splitext(os.path.split(l)[1])[0]
                 lobjs = project.mapLayersByName(nam)
                 if lobjs:
                     project.removeMapLayers([lobjs[0].id()])
